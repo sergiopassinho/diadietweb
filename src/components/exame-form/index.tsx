@@ -1,17 +1,26 @@
-import React, { useState } from "react";
-import { Button, DatePicker, Form, Input, Upload } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, DatePicker, Form, Input, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import { api } from "../../utils/api";
 
+interface Paciente {
+  email: string;
+  idPaciente: string;
+  name: string;
+}
+
 const ExameForm: React.FC = () => {
-  const [paciente, setPaciente] = useState<string>("");
+  const { Option } = Select;
+
+  const [pacienteId, setPacienteId] = useState<string>("");
+  const [pacientes, setPacientes] = useState<Paciente[] | []>([]);
   const [arquivos, setArquivos] = useState<UploadFile<any>[]>([]);
   const [dataRetorno, setDataRetorno] = useState<string>("");
   const [receita, setReceita] = useState<string>("");
 
-  const onPacienteChange = (e: any) => {
-    setPaciente(e.target.value);
+  const onPacienteIdChange = (id: any) => {
+    setPacienteId(id);
   };
 
   const onDataRetornoChange = (d: any, ds: any) => {
@@ -32,21 +41,39 @@ const ExameForm: React.FC = () => {
         dataRetorno: dataRetorno,
         receita: receita,
         anexo: arquivos,
-        idPaciente: paciente,
+        idPaciente: pacienteId,
       });
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      const result = (await api.get("pacientes")) as {
+        data: Paciente[];
+      };
+      setPacientes(result.data as Paciente[]);
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <Form layout="vertical">
       <Form.Item label="Paciente">
-        <Input
-          placeholder="Email"
-          onChange={onPacienteChange}
-          value={paciente}
-        />
+        <Select
+          placeholder="Paciente"
+          onChange={onPacienteIdChange}
+          value={pacienteId}
+        >
+          {Array.isArray(pacientes) &&
+            pacientes?.map((value) => (
+              <Option value={value.idPaciente}>
+                {value.name} ({value.email})
+              </Option>
+            ))}
+        </Select>
       </Form.Item>
 
       <Form.Item label="Anexo">
