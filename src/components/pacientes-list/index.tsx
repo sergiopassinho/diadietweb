@@ -10,10 +10,38 @@ interface Paciente {
 }
 
 interface Exame {
+  anexo: string;
   dataRetorno: string;
   receita: string;
   paciente: Paciente;
 }
+const handleDownload = (base: string) => {
+  const blob = base64toBlob(base);
+  const file = new File([blob], "image/jpeg", {
+    type: "application/octet-stream",
+  });
+
+  const url = window.URL.createObjectURL(file);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "receita.jpeg";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+};
+
+const base64toBlob = (base64Data: string) => {
+  const byteCharacters = atob(base64Data);
+  const byteNumbers = new Array(byteCharacters.length);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: "image/jpeg" });
+};
 
 export const PacientesList = () => {
   const [exames, setExames] = useState<any>([]);
@@ -50,6 +78,13 @@ export const PacientesList = () => {
           <p>
             <strong>Receita:</strong> {exame.receita}
           </p>
+          <button
+            onClick={() => {
+              handleDownload(exame.anexo);
+            }}
+          >
+            Baixar arquivo
+          </button>
         </Card>
       ))}
     </>
