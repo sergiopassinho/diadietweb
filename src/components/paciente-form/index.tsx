@@ -49,7 +49,11 @@ const PacienteForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item label="Data de Nascimento">
-        <DatePicker onChange={onDataNascimentoChange} format="YYYY-MM-DD" />
+        <DatePicker
+          onChange={onDataNascimentoChange}
+          format="YYYY-MM-DD"
+          placeholder="Data"
+        />
       </Form.Item>
 
       <Form.Item label="Email">
@@ -57,7 +61,9 @@ const PacienteForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" onClick={onSalvarButton}>Salvar</Button>
+        <Button type="primary" onClick={onSalvarButton}>
+          Salvar
+        </Button>
       </Form.Item>
     </Form>
   );

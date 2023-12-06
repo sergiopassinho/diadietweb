@@ -97,7 +97,11 @@ const ExameForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item label="Data de Retorno">
-        <DatePicker onChange={onDataRetornoChange} format="YYYY-MM-DD" />
+        <DatePicker
+          onChange={onDataRetornoChange}
+          format="YYYY-MM-DD"
+          placeholder="Data"
+        />
       </Form.Item>
 
       <Form.Item label="Receita">
@@ -110,7 +114,9 @@ const ExameForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" onClick={onSalvarButton}>Salvar</Button>
+        <Button type="primary" onClick={onSalvarButton}>
+          Salvar
+        </Button>
       </Form.Item>
     </Form>
   );
