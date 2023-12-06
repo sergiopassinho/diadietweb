@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 import { api } from "../../utils/api";
+import emailjs from "emailjs-com";
 
 interface Paciente {
   email: string;
@@ -29,8 +30,8 @@ const ReceitaForm: React.FC = () => {
 
   const { Option } = Select;
 
-  const [pacienteId, setPacienteId] = useState<string>("");
-  const [medicamentoId, setMedicamentoId] = useState<string>("");
+  const [pacienteEmail, setPacienteEmail] = useState<string>("");
+  const [medicamento, setMedicamento] = useState<string>("");
   const [pacientes, setPacientes] = useState<Paciente[] | []>([]);
   const [medicamentos, setMedicamentos] = useState<Medicamento[] | []>([]);
   const [receita, setReceita] = useState<string>("");
@@ -53,8 +54,8 @@ const ReceitaForm: React.FC = () => {
   const onReceitaChange = (e: any) => {
     setReceita(e.target.value);
   };
-  const onPacienteIdChange = (id: any) => {
-    setPacienteId(id);
+  const onPacienteIdChange = (value: any) => {
+    setPacienteEmail(value);
   };
 
   useEffect(() => {
@@ -77,7 +78,26 @@ const ReceitaForm: React.FC = () => {
   }, []);
 
   const onSalvarButton = async () => {
-    // enviar no email do paciente
+    try {
+      const templateParams = {
+        to_email: pacienteEmail,
+        medicamento: medicamento,
+        receita: receita,
+      };
+
+      console.log(pacienteEmail);
+
+      const emailResponse = await emailjs.send(
+        "service_w3ywub2",
+        "template_w5jnyqn",
+        templateParams,
+        "PMGT06eV8FHNIKEaP"
+      );
+
+      console.log("Email sent successfully:", emailResponse);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
   };
 
   const onCreateMedicamento = async () => {
@@ -103,11 +123,11 @@ const ReceitaForm: React.FC = () => {
         <Select
           placeholder="Paciente"
           onChange={onPacienteIdChange}
-          value={pacienteId}
+          value={pacienteEmail}
         >
           {Array.isArray(pacientes) &&
             pacientes?.map((value) => (
-              <Option value={value.idPaciente}>
+              <Option value={value.email}>
                 {value.name} ({value.email})
               </Option>
             ))}
@@ -117,12 +137,12 @@ const ReceitaForm: React.FC = () => {
       <Form.Item label="Medicamento">
         <Select
           placeholder="Medicamento"
-          onChange={setMedicamentoId}
-          value={medicamentoId}
+          onChange={setMedicamento}
+          value={medicamento}
         >
           {Array.isArray(medicamentos) &&
             medicamentos?.map((value) => (
-              <Option value={value.idMedicamento}>{value.name}</Option>
+              <Option value={value.name}>{value.name}</Option>
             ))}
         </Select>
 
