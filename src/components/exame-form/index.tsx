@@ -97,12 +97,16 @@ const ExameForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item label="Data de Retorno">
-        <DatePicker onChange={onDataRetornoChange} format="YYYY-MM-DD" />
+        <DatePicker
+          onChange={onDataRetornoChange}
+          format="YYYY-MM-DD"
+          placeholder="Data"
+        />
       </Form.Item>
 
-      <Form.Item label="Receita">
+      <Form.Item label="Observações">
         <Input.TextArea
-          placeholder="Digite a receita do paciente"
+          placeholder="Digite observações sobre o exame"
           onChange={onReceitaChange}
           value={receita}
           style={{ height: 220, resize: "none" }}
@@ -110,7 +114,9 @@ const ExameForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" onClick={onSalvarButton}>Salvar</Button>
+        <Button type="primary" onClick={onSalvarButton}>
+          Salvar
+        </Button>
       </Form.Item>
     </Form>
   );

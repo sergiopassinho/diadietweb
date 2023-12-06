@@ -10,6 +10,7 @@ import {
 import { PacienteForm } from "../paciente-form";
 import { ExameForm } from "../exame-form";
 import { PacientesList } from "../pacientes-list";
+import { ReceitaForm } from "../receita-form";
 
 const { Header, Content, Sider } = Layout;
 
@@ -21,7 +22,17 @@ const LayoutApp: React.FC = () => {
   return (
     <Router>
       <Layout>
-        <Header style={{ display: "flex", alignItems: "center", color: "white", fontFamily: "cursive", fontSize: 30 }} >DiaDiet</Header>
+        <Header
+          style={{
+            display: "flex",
+            alignItems: "center",
+            color: "white",
+            fontFamily: "cursive",
+            fontSize: 30,
+          }}
+        >
+          DiaDiet
+        </Header>
         <Content>
           <Layout style={{ background: colorBgContainer }}>
             <Sider
@@ -34,22 +45,28 @@ const LayoutApp: React.FC = () => {
                 defaultOpenKeys={["pacientes"]}
                 style={{ height: "100%" }}
               >
-                <Menu.Item key="pacientes">
-                  <Link to="/pacientes">Criar paciente</Link>
-                </Menu.Item>
                 <Menu.Item key="pacientesList">
                   <Link to="/pacientesList">Lista de Pacientes</Link>
                 </Menu.Item>
+                <Menu.Item key="pacientes">
+                  <Link to="/pacientes">Cadastrar Paciente</Link>
+                </Menu.Item>
+
                 <Menu.Item key="exames">
-                  <Link to="/exames">Exames</Link>
+                  <Link to="/exames">Cadastrar Exame</Link>
+                </Menu.Item>
+
+                <Menu.Item key="receitas">
+                  <Link to="/receitas">Enviar Receita</Link>
                 </Menu.Item>
               </Menu>
             </Sider>
             <Content style={{ padding: "10px 24px", minHeight: 280 }}>
               <Routes>
+                <Route path="/pacientesList" element={<PacientesList />} />
                 <Route path="/pacientes" element={<PacienteForm />} />
                 <Route path="/exames" element={<ExameForm />} />
-                <Route path="/pacientesList" element={<PacientesList />} />
+                <Route path="/receitas" element={<ReceitaForm />} />
                 <Route path="*" element={<Navigate to="/pacientes" />} />
               </Routes>
             </Content>

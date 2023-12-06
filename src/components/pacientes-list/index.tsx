@@ -82,7 +82,7 @@ export const PacientesList = () => {
             {formatDate(exame.dataRetorno)}
           </p>
           <p>
-            <strong>Receita:</strong> {exame.receita}
+            <strong>Observações:</strong> {exame.receita}
           </p>
           <Button
             type="primary"
