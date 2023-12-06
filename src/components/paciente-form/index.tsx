@@ -57,7 +57,7 @@ const PacienteForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button onClick={onSalvarButton}>Salvar</Button>
+        <Button type="primary" onClick={onSalvarButton}>Salvar</Button>
       </Form.Item>
     </Form>
   );

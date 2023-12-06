@@ -21,7 +21,7 @@ const LayoutApp: React.FC = () => {
   return (
     <Router>
       <Layout>
-        <Header style={{ display: "flex", alignItems: "center" }} />
+        <Header style={{ display: "flex", alignItems: "center", color: "white", fontFamily: "cursive", fontSize: 30 }} >DiaDiet</Header>
         <Content>
           <Layout style={{ background: colorBgContainer }}>
             <Sider
