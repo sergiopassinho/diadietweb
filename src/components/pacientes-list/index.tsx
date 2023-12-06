@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { api } from "../../utils/api";
-import { Card } from "antd";
+import { Button, Card } from "antd";
 
 interface Paciente {
   email: string;
@@ -15,6 +15,7 @@ interface Exame {
   receita: string;
   paciente: Paciente;
 }
+
 const handleDownload = (base: string) => {
   const blob = base64toBlob(base);
   const file = new File([blob], "image/jpeg", {
@@ -24,7 +25,7 @@ const handleDownload = (base: string) => {
   const url = window.URL.createObjectURL(file);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "receita.jpeg";
+  a.download = "exame.jpeg";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -64,7 +65,12 @@ export const PacientesList = () => {
     <>
       {exames.map((exame: Exame) => (
         <Card
-          title={exame.paciente.name}
+          title={
+            <p>
+              <strong>Nome do paciente: </strong>
+              {exame.paciente.name}
+            </p>
+          }
           key={exame.paciente.idPaciente}
           style={{
             width: 300,
@@ -78,13 +84,14 @@ export const PacientesList = () => {
           <p>
             <strong>Receita:</strong> {exame.receita}
           </p>
-          <button
+          <Button
+            type="primary"
             onClick={() => {
               handleDownload(exame.anexo);
             }}
           >
-            Baixar arquivo
-          </button>
+            Baixar exame
+          </Button>
         </Card>
       ))}
     </>
