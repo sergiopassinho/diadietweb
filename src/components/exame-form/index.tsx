@@ -10,12 +10,24 @@ interface Paciente {
   name: string;
 }
 
+const getBase64 = (file: any) => {
+  console.log(file);
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event: any) {
+      resolve(event.target.result);
+    };
+
+    reader.readAsDataURL(file.file);
+  });
+};
 const ExameForm: React.FC = () => {
   const { Option } = Select;
 
+  const [base64Files, setBase64Files] = useState<any>([]);
   const [pacienteId, setPacienteId] = useState<string>("");
   const [pacientes, setPacientes] = useState<Paciente[] | []>([]);
-  const [arquivos, setArquivos] = useState<UploadFile<any>[]>([]);
   const [dataRetorno, setDataRetorno] = useState<string>("");
   const [receita, setReceita] = useState<string>("");
 
@@ -32,7 +44,9 @@ const ExameForm: React.FC = () => {
   };
 
   const onUploadChange = (info: UploadChangeParam<UploadFile<any>>) => {
-    setArquivos([...info.fileList]);
+    getBase64(info).then((result: any) =>
+      setBase64Files(result.toString().replace("data:", "").replace(/^.+,/, ""))
+    );
   };
 
   const onSalvarButton = async () => {
@@ -40,7 +54,7 @@ const ExameForm: React.FC = () => {
       await api.post("exames", {
         dataRetorno: dataRetorno,
         receita: receita,
-        anexo: arquivos,
+        anexo: base64Files,
         idPaciente: pacienteId,
       });
     } catch (error) {
